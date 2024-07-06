@@ -1,4 +1,7 @@
+package apiTestUtils;
+
 import io.restassured.response.Response;
+import org.json.JSONObject;
 
 import static io.restassured.RestAssured.given;
 
@@ -11,27 +14,17 @@ public class AuthTokens {
         this.refreshToken = refreshToken;
     }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-
     public static AuthTokens login(String email, String password) {
-        String json = "{\n" +
-                "\"email\": \"" + email + "\",\n" +
-                "\"password\": \"" + password + "\"\n" +
-                "}";
+        JSONObject json = new JSONObject();
+        json.put("email", email);
+        json.put("password", password);
         try {
             Response response =
                     given()
                             .header("Content-type", "application/json")
-                            .body(json)
+                            .body(json.toString())
                             .when()
-                            .post("https://stellarburgers.nomoreparties.site/api/auth/login");
+                            .post(Urls.apiLogin);
 
             if (response.getStatusCode() == 200) {
                 String accessToken = response.getBody().jsonPath().getString("accessToken").
@@ -49,5 +42,13 @@ public class AuthTokens {
         }
 
 
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
     }
 }

@@ -1,23 +1,18 @@
+package apiTestUtils;
+
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import org.junit.Before;
-import org.junit.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-public class GetOrdersListTest {
-    public static final String PASSWORD = "12345678";
-    public String name;
-    public String email;
-
+public class GetOrderList extends AbstractTest {
     @Step("Send request")
     public Response sendRequest(String accessToken) {
         return given()
                 .header("Content-type", "application/json")
                 .auth().oauth2(accessToken)
                 .when()
-                .get("https://stellarburgers.nomoreparties.site/api/orders");
+                .get(Urls.apiOrders);
     }
 
     @Step("Order number check")
@@ -39,26 +34,6 @@ public class GetOrdersListTest {
                 .and().body("message", equalTo("You should be authorised"));
     }
 
-    @Before
-    public void before() {
-        name = "mrskhokh" + TestUtils.generateRandomNumbers(4);
-        email = name + "@ya.ru";
-    }
-
-    @Test
-    public void GetOrderListForAuthorizationUserTest() {
-        AuthTokens authTokens = User.create(email, PASSWORD, name);
-        //Создаем новый заказ
-        Integer orderNumber = Order.createWithAuth(authTokens.getAccessToken());
-        responseOrderNumberCheck(orderNumber, authTokens.getAccessToken());
-        //Удаляем пользователя
-        User.delete(authTokens.getAccessToken());
-    }
-
-    @Test
-    public void GetOrderListForNoAuthorizationUserTest() {
-        //Создаем новый заказ
-        Order.createWithoutAuth();
-        responseCheck();
+    public static class OrderCreate {
     }
 }
