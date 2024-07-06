@@ -1,7 +1,6 @@
 package apiTests;
 
 import apiTestUtils.*;
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONArray;
@@ -13,9 +12,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static apiTestUtils.TestUtils.PASSWORD;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 
 public class OrderCreatingTest extends OrderCreate {
     List<Ingredients> ingredientList = Ingredients.getIngredientsList();

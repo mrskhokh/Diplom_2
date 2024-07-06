@@ -3,7 +3,6 @@ package apiTests;
 import apiTestUtils.AuthTokens;
 import apiTestUtils.TestUtils;
 import apiTestUtils.User;
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -11,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static apiTestUtils.TestUtils.PASSWORD;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 
 public class UserLoginTest extends User {
 

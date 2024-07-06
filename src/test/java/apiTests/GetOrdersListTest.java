@@ -3,14 +3,10 @@ package apiTests;
 import apiTestUtils.*;
 
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Test;
 
 import static apiTestUtils.TestUtils.PASSWORD;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
 public class GetOrdersListTest extends GetOrderList {
 
 
