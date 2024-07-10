@@ -1,4 +1,4 @@
-package apiTestUtils;
+package apitestutils;
 
 //Список всех используемых url
 public class Urls {

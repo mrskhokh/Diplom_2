@@ -1,4 +1,4 @@
-package apiTestUtils;
+package apitestutils;
 
 import io.restassured.response.Response;
 import org.json.JSONObject;

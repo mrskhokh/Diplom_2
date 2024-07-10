@@ -1,7 +1,7 @@
-package apiTests;
+package apitests;
 
-import apiTestUtils.AuthTokens;
-import apiTestUtils.User;
+import apitestutils.AuthTokens;
+import apitestutils.User;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static apiTestUtils.TestUtils.PASSWORD;
+import static apitestutils.TestUtils.PASSWORD;
 
 public class UserDataChangeTest extends User {
 

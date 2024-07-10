@@ -1,13 +1,13 @@
-package apiTests;
+package apitests;
 
-import apiTestUtils.*;
+import apitestutils.*;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import static apiTestUtils.TestUtils.PASSWORD;
+import static apitestutils.TestUtils.PASSWORD;
 
 
 public class UserCreatingTest extends User {

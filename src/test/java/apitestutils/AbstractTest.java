@@ -1,4 +1,4 @@
-package apiTestUtils;
+package apitestutils;
 
 import org.junit.Before;
 

@@ -1,6 +1,6 @@
-package apiTests;
+package apitests;
 
-import apiTestUtils.*;
+import apitestutils.*;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONArray;
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static apiTestUtils.TestUtils.PASSWORD;
+import static apitestutils.TestUtils.PASSWORD;
 
 public class OrderCreatingTest extends OrderCreate {
     List<Ingredients> ingredientList = Ingredients.getIngredientsList();
