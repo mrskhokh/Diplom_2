@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static apitestutils.TestUtils.PASSWORD;
-public class GetOrdersListTest extends GetOrderList {
+public class GetOrdersListTest extends AbstractTest {
 
 
     @Before
