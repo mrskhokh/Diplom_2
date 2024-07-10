@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-public class GetOrderList extends AbstractTest {
+public class GetOrderList  {
     @Step("Send request")
     public Response sendRequest(String accessToken) {
         return given()

@@ -35,14 +35,18 @@ public final class TestUtils {
 
             String firstIngredientID = (ingredientList.get(0).getId());
             String secondIngredientID = (ingredientList.get(1).getId());
-            String json = "{\n" +
-                    "\"ingredients\": [\"" + firstIngredientID + "\",\"" + secondIngredientID + "\"]\n" +
-                    "}";
+
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(firstIngredientID);
+            jsonArray.put(secondIngredientID);
+
+            JSONObject json = new JSONObject();
+            json.put("ingredients", jsonArray);
 
             Response response =
                     given()
                             .header("Content-type", "application/json")
-                            .body(json)
+                            .body(json.toString())
                             .auth().oauth2(accessCode)
                             .when()
                             .post(Urls.API_ORDERS);
