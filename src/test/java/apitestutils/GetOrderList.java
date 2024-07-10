@@ -34,6 +34,4 @@ public class GetOrderList extends AbstractTest {
                 .and().body("message", equalTo("You should be authorised"));
     }
 
-    public static class OrderCreate {
-    }
 }
