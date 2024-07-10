@@ -16,7 +16,7 @@ public class OrderCreate extends AbstractTest {
                 .body(json)
                 .auth().oauth2(accessToken)
                 .when()
-                .post(Urls.apiOrders);
+                .post(Urls.API_ORDERS);
     }
 
     @Step("Success response check")

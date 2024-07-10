@@ -16,7 +16,7 @@ public class User extends AbstractTest {
                 .header("Content-type", "application/json")
                 .body(json)
                 .when()
-                .post(Urls.apiUserRegister);
+                .post(Urls.API_USER_REGISTER);
     }
 
     @Step("User creating")
@@ -32,7 +32,7 @@ public class User extends AbstractTest {
                         .header("Content-type", "application/json")
                         .body(json.toString())
                         .when()
-                        .post(Urls.apiUserRegister);
+                        .post(Urls.API_USER_REGISTER);
 
         String accessToken = response.getBody()
                 .jsonPath()
@@ -52,7 +52,7 @@ public class User extends AbstractTest {
         given()
                 .body(json)
                 .when()
-                .post(Urls.apiLogout);
+                .post(Urls.API_LOGOUT);
     }
 
     @Step("aieTestUtils.User deleting")
@@ -60,7 +60,7 @@ public class User extends AbstractTest {
         given()
                 .auth().oauth2(accessCode)
                 .when()
-                .delete(Urls.apiUserDelete);
+                .delete(Urls.API_USER_DELETE);
 
     }
 
@@ -70,7 +70,7 @@ public class User extends AbstractTest {
                 .header("Content-type", "application/json")
                 .body(json)
                 .auth().oauth2(accessToken)
-                .get(Urls.apiUserData);
+                .get(Urls.API_USER_DATA);
     }
 
     @Step("User data change PATCH request send")
@@ -80,7 +80,7 @@ public class User extends AbstractTest {
                 .body(json)
                 .auth().oauth2(accessToken)
                 .when()
-                .patch(Urls.apiUserData);
+                .patch(Urls.API_USER_DATA);
     }
 
     @Step("Request sent")
@@ -89,7 +89,7 @@ public class User extends AbstractTest {
                 .header("Content-type", "application/json")
                 .body(json)
                 .when()
-                .post(Urls.apiLogin);
+                .post(Urls.API_LOGIN);
     }
     @Step("Compare response from POST request")
     public void compareResponseFromRequest(Response response) {

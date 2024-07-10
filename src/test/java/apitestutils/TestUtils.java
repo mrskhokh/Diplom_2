@@ -45,7 +45,7 @@ public final class TestUtils {
                             .body(json)
                             .auth().oauth2(accessCode)
                             .when()
-                            .post(Urls.apiOrders);
+                            .post(Urls.API_ORDERS);
 
             return response.getBody().jsonPath().get("order.number");
         }
@@ -63,7 +63,7 @@ public final class TestUtils {
                     .header("Content-type", "application/json")
                     .body(json.toString())
                     .when()
-                    .post(Urls.apiOrders);
+                    .post(Urls.API_ORDERS);
         }
     }
 }

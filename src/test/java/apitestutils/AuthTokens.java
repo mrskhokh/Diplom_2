@@ -24,7 +24,7 @@ public class AuthTokens {
                             .header("Content-type", "application/json")
                             .body(json.toString())
                             .when()
-                            .post(Urls.apiLogin);
+                            .post(Urls.API_LOGIN);
 
             if (response.getStatusCode() == 200) {
                 String accessToken = response.getBody().jsonPath().getString("accessToken").

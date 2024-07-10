@@ -22,7 +22,7 @@ public class Ingredients {
                 given()
                         .header("Content-type", "application/json")
                         .when()
-                        .get(Urls.apiGetIngredients);
+                        .get(Urls.API_GET_INGREDIENTS);
 
 
         Gson gson = new Gson();

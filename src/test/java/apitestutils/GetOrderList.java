@@ -12,7 +12,7 @@ public class GetOrderList extends AbstractTest {
                 .header("Content-type", "application/json")
                 .auth().oauth2(accessToken)
                 .when()
-                .get(Urls.apiOrders);
+                .get(Urls.API_ORDERS);
     }
 
     @Step("Order number check")
