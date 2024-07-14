@@ -1,5 +1,7 @@
-package apitestutils;
+package api.step;
 
+import api.Urls;
+import api.pojo.AuthToken;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -8,7 +10,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class User extends AbstractTest {
+public class UserStepHolder {
 
     @Step("Send POST request to https://stellarburgers.nomoreparties.site/api/auth/register ")
     public static Response sentPostRegisterRequest(String json) {
@@ -20,7 +22,7 @@ public class User extends AbstractTest {
     }
 
     @Step("User creating")
-    public static AuthTokens create(String email, String password, String name) {
+    public static AuthToken create(String email, String password, String name) {
 
         JSONObject json = new JSONObject();
         json.put("email", email);
@@ -42,7 +44,7 @@ public class User extends AbstractTest {
 
         String refreshToken = response.getBody().jsonPath().getString("refreshToken");
 
-        return new AuthTokens(accessToken, refreshToken);
+        return new AuthToken(accessToken, refreshToken);
     }
 
     @Step("Logout")
@@ -65,7 +67,7 @@ public class User extends AbstractTest {
     }
 
     @Step("Get user data request send")
-    public Response getRequestSend(String json, String accessToken) {
+    public static Response getRequestSend(String json, String accessToken) {
         return given()
                 .header("Content-type", "application/json")
                 .body(json)
@@ -74,7 +76,7 @@ public class User extends AbstractTest {
     }
 
     @Step("User data change PATCH request send")
-    public Response requestRenameSend(String json, String accessToken) {
+    public static Response requestRenameSend(String json, String accessToken) {
         return given()
                 .header("Content-type", "application/json")
                 .body(json)
@@ -84,7 +86,7 @@ public class User extends AbstractTest {
     }
 
     @Step("Request sent")
-    public Response requestLoginSend(String json) {
+    public static Response requestLoginSend(String json) {
         return given()
                 .header("Content-type", "application/json")
                 .body(json)
@@ -92,27 +94,27 @@ public class User extends AbstractTest {
                 .post(Urls.API_LOGIN);
     }
     @Step("Compare response from POST request")
-    public void compareResponseFromRequest(Response response) {
+    public static void compareResponseFromRequest(Response response, String email, String name) {
         response.then().assertThat().statusCode(200).and()
                 .body("user.email", equalTo(email)).and()
                 .body("user.name", equalTo(name));
     }
 
     @Step("Compare response for doublicated user POST request")
-    public void compareResponseForDoublicatePostRequest(Response response) {
+    public static void compareResponseForDuplicatePostRequest(Response response) {
         response.then().assertThat().statusCode(403).and()
                 .body("success", equalTo(false)).and()
                 .body("message", equalTo("User already exists"));
     }
 
-    @Step("Compare responce with required fields missed in user creating POST request")
-    public void compareResponseForMistFieldsUserCreatePostRequest(Response response) {
+    @Step("Compare response with required fields missed in user creating POST request")
+    public static void compareResponseForMistFieldsUserCreatePostRequest(Response response) {
         response.then().assertThat().statusCode(403).and()
                 .body("success", equalTo(false)).and()
                 .body("message", equalTo("Email, password and name are required fields"));
     }
     @Step("Compare success response")
-    public void responseSuccessCompare(Response response, String newEmail, String newName) {
+    public static void responseSuccessCompare(Response response, String newEmail, String newName) {
         response.then().assertThat().statusCode(200).and()
                 .body("success", equalTo(true)).and()
                 .body("user.email", equalTo(newEmail)).and()
@@ -121,21 +123,21 @@ public class User extends AbstractTest {
     }
 
     @Step("Compare response with auth exception")
-    public void responseNoAuthCompare(Response response) {
+    public static void responseNoAuthCompare(Response response) {
         response.then().assertThat().statusCode(401).and()
                 .body("success", equalTo(false)).and()
                 .body("message", equalTo("You should be authorised"));
     }
 
     @Step("Compare success response")
-    public void responseGetCompare(Response getResponse, String newName, String newEmail) {
+    public static void responseGetCompare(Response getResponse, String newName, String newEmail) {
         getResponse.then().assertThat().statusCode(200).and()
                 .body("success", equalTo(true)).and()
                 .body("user.email", equalTo(newEmail)).and()
                 .body("user.name", equalTo(newName));
     }
     @Step("Response success check")
-    public void responseSuccessCheck(Response response) {
+    public static void responseSuccessCheck(Response response, String email, String name) {
         response.then().assertThat().statusCode(200).and()
                 .body("success", equalTo(true)).and()
                 .body("accessToken", notNullValue()).and()
@@ -144,7 +146,7 @@ public class User extends AbstractTest {
     }
 
     @Step("Response auth error check")
-    public void responseAuthErrCheck(Response response, Integer code, Boolean success, String message) {
+    public static void responseAuthErrCheck(Response response, Integer code, Boolean success, String message) {
         response.then().assertThat().statusCode(code).and()
                 .body("success", equalTo(success)).and()
                 .body("message", equalTo(message));

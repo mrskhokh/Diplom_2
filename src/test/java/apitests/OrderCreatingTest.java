@@ -1,31 +1,28 @@
 package apitests;
 
-import apitestutils.*;
+import api.TestUtils;
+import api.pojo.AuthToken;
+import api.pojo.Ingredient;
+import api.step.OrderStepHolder;
+import api.step.UserStepHolder;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static apitestutils.TestUtils.PASSWORD;
+import static api.TestConstants.PASSWORD;
 
-public class OrderCreatingTest extends OrderCreate {
-    List<Ingredients> ingredientList = Ingredients.getIngredientsList();
-
-
-    @Before
-    public void beforeEach() {
-        super.setUp();
-    }
+public class OrderCreatingTest extends AbstractTest {
+    List<Ingredient> ingredientList = Ingredient.getIngredientsList();
 
     @DisplayName("Positive case order creating by authorizated user")
     @Test
     public void orderCreatingWithAuthorizationSuccessTest() {
-        User.create(email, PASSWORD, name);
+        UserStepHolder.create(email, PASSWORD, name);
         String firstIngredientID = (ingredientList.get(0).getId());
         String secondIngredientID = (ingredientList.get(1).getId());
 
@@ -36,12 +33,12 @@ public class OrderCreatingTest extends OrderCreate {
         JSONObject json = new JSONObject();
         json.put("ingredients", jsonArray);
 
-        AuthTokens authTokens = AuthTokens.login(email, PASSWORD);
+        AuthToken authTokens = AuthToken.login(email, PASSWORD);
         Assert.assertNotNull(authTokens);
 
-        Response response = requestSent(json.toString(), authTokens.getAccessToken());
-        responseCheck(response);
-        User.delete(authTokens.getAccessToken());
+        Response response = OrderStepHolder.requestSent(json.toString(), authTokens.getAccessToken());
+        OrderStepHolder.responseCheck(response);
+        UserStepHolder.delete(authTokens.getAccessToken());
     }
 
     @DisplayName("Positive case order creating by NOT authorizated user")
@@ -57,8 +54,8 @@ public class OrderCreatingTest extends OrderCreate {
         JSONObject json = new JSONObject();
         json.put("ingredients", jsonArray);
 
-        Response response = requestSent(json.toString(), "");
-        responseCheck(response);
+        Response response = OrderStepHolder.requestSent(json.toString(), "");
+        OrderStepHolder.responseCheck(response);
     }
 
     @DisplayName("Order creating without ingredients")
@@ -68,8 +65,8 @@ public class OrderCreatingTest extends OrderCreate {
 
         JSONObject json = new JSONObject();
         json.put("ingredients", jsonArray);
-        Response response = requestSent(json.toString(), "");
-        responseIngredientsCheck(response, 400, false, "Ingredient ids must be provided");
+        Response response = OrderStepHolder.requestSent(json.toString(), "");
+        OrderStepHolder.responseIngredientsCheck(response, 400, false, "Ingredient ids must be provided");
     }
 
     @DisplayName("Order creating with wrong ingredient ID")
@@ -84,9 +81,8 @@ public class OrderCreatingTest extends OrderCreate {
         JSONObject json = new JSONObject();
         json.put("ingredients", jsonArray);
 
-
-        Response response = requestSent(json.toString(), "");
-        responseIngredientsCheck(response, 400, false, "One or more ids provided are incorrect");
+        Response response = OrderStepHolder.requestSent(json.toString(), "");
+        OrderStepHolder.responseIngredientsCheck(response, 400, false, "One or more ids provided are incorrect");
     }
 
 }

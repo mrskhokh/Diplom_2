@@ -1,27 +1,21 @@
 package apitests;
 
-import apitestutils.AuthTokens;
-import apitestutils.User;
+import api.pojo.AuthToken;
+import api.step.UserStepHolder;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import static apitestutils.TestUtils.PASSWORD;
+import static api.TestConstants.PASSWORD;
 
-public class UserDataChangeTest extends User {
-
-    @Before
-    public void beforeEach() {
-        super.setUp();
-    }
+public class UserDataChangeTest extends AbstractTest {
 
     @DisplayName("User data change test for auth user")
     @Test
     public void userDataChangeWithAuthorizationSuccessTest() {
-        AuthTokens authTokens = User.create(email, PASSWORD, name);
+        AuthToken authTokens = UserStepHolder.create(email, PASSWORD, name);
         String accessToken = authTokens.getAccessToken();
         String refreshToken = authTokens.getRefreshToken();
 
@@ -35,9 +29,9 @@ public class UserDataChangeTest extends User {
         json.put("name", newName);
         json.put("password", newPassword);
 
-        Response response = requestRenameSend(json.toString(), accessToken);
-        responseSuccessCompare(response, newEmail, newName);
-        User.logout(refreshToken);
+        Response response = UserStepHolder.requestRenameSend(json.toString(), accessToken);
+        UserStepHolder.responseSuccessCompare(response, newEmail, newName);
+        UserStepHolder.logout(refreshToken);
 
         //Проверка GET, что пользователь действительно сохранился
         JSONObject getJson = new JSONObject();
@@ -45,22 +39,22 @@ public class UserDataChangeTest extends User {
         getJson.put("name", newName);
         getJson.put("password", newPassword);
 
-        AuthTokens newAuthTokens = AuthTokens.login(newEmail, newPassword);
+        AuthToken newAuthTokens = AuthToken.login(newEmail, newPassword);
 
 
         Assert.assertNotNull(newAuthTokens);
         Assert.assertNotNull(newAuthTokens.getAccessToken());
 
         String newAccessToken = newAuthTokens.getAccessToken();
-        Response getResponse = getRequestSend(getJson.toString(), newAccessToken);
-        responseGetCompare(getResponse, newName, newEmail);
-        User.delete(newAccessToken);
+        Response getResponse = UserStepHolder.getRequestSend(getJson.toString(), newAccessToken);
+        UserStepHolder.responseGetCompare(getResponse, newName, newEmail);
+        UserStepHolder.delete(newAccessToken);
     }
 
     @DisplayName("User data change test for NO auth user")
     @Test
     public void userDataChangeWithoutAuthorizationTest() {
-        User.create(email, PASSWORD, name);
+        UserStepHolder.create(email, PASSWORD, name);
         String newName = "new" + name;
         String newEmail = "new" + email;
         String newPassword = "new" + PASSWORD;
@@ -70,8 +64,8 @@ public class UserDataChangeTest extends User {
         json.put("name", newName);
         json.put("password", newPassword);
 
-        Response response = requestRenameSend(json.toString(), "");
-        responseNoAuthCompare(response);
+        Response response = UserStepHolder.requestRenameSend(json.toString(), "");
+        UserStepHolder.responseNoAuthCompare(response);
     }
 }
 

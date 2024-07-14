@@ -1,22 +1,15 @@
 package apitests;
 
-import apitestutils.*;
+import api.pojo.AuthToken;
+import api.step.UserStepHolder;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 
-import static apitestutils.TestUtils.PASSWORD;
+import static api.TestConstants.PASSWORD;
 
-
-public class UserCreatingTest extends User {
-    @Before
-    public void beforeEach() {
-        super.setUp();
-    }
-
-
+public class UserCreatingTest extends AbstractTest {
     @DisplayName("New user creating success test")
     @Test
     public void newUserCreatingSuccessTest() {
@@ -25,28 +18,29 @@ public class UserCreatingTest extends User {
         json.put("name", name);
         json.put("password", PASSWORD);
 
-        Response response = User.sentPostRegisterRequest(json.toString());
-        compareResponseFromRequest(response);
+        Response response = UserStepHolder.sentPostRegisterRequest(json.toString());
+        UserStepHolder.compareResponseFromRequest(response, email, name);
         String accessToken = response.getBody()
                 .jsonPath()
                 .getString("accessToken")
                 .replace("Bearer", "")
                 .trim();
 
-        User.delete(accessToken);
+        UserStepHolder.delete(accessToken);
     }
 
     @DisplayName("Doublicated user creating")
     @Test
     public void doublicatedUserCreatingTest() {
-        AuthTokens authTokens = User.create(email, PASSWORD, name);
+        AuthToken authTokens = UserStepHolder.create(email, PASSWORD, name);
         JSONObject json = new JSONObject();
         json.put("email", email);
         json.put("name", name);
         json.put("password", PASSWORD);
-        Response response = User.sentPostRegisterRequest(json.toString());
-        compareResponseForDoublicatePostRequest(response);
-        User.delete(authTokens.getAccessToken());
+
+        Response response = UserStepHolder.sentPostRegisterRequest(json.toString());
+        UserStepHolder.compareResponseForDuplicatePostRequest(response);
+        UserStepHolder.delete(authTokens.getAccessToken());
     }
 
     @DisplayName("No email user creating test")
@@ -56,8 +50,9 @@ public class UserCreatingTest extends User {
         json.put("email", "");
         json.put("name", name);
         json.put("password", PASSWORD);
-        Response response = User.sentPostRegisterRequest(json.toString());
-        compareResponseForMistFieldsUserCreatePostRequest(response);
+
+        Response response = UserStepHolder.sentPostRegisterRequest(json.toString());
+        UserStepHolder.compareResponseForMistFieldsUserCreatePostRequest(response);
     }
 
     @DisplayName("No password user creating test")
@@ -67,8 +62,9 @@ public class UserCreatingTest extends User {
         json.put("email", email);
         json.put("name", name);
         json.put("password", "");
-        Response response = User.sentPostRegisterRequest(json.toString());
-        compareResponseForMistFieldsUserCreatePostRequest(response);
+
+        Response response = UserStepHolder.sentPostRegisterRequest(json.toString());
+        UserStepHolder.compareResponseForMistFieldsUserCreatePostRequest(response);
     }
 
     @Test
@@ -78,7 +74,8 @@ public class UserCreatingTest extends User {
         json.put("email", email);
         json.put("name", "");
         json.put("password", PASSWORD);
-        Response response = User.sentPostRegisterRequest(json.toString());
-        compareResponseForMistFieldsUserCreatePostRequest(response);
+
+        Response response = UserStepHolder.sentPostRegisterRequest(json.toString());
+        UserStepHolder.compareResponseForMistFieldsUserCreatePostRequest(response);
     }
 }
